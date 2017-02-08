@@ -12,9 +12,8 @@ app.get('/test', function(req, res){
     res.sendFile(__dirname + '/test.html');
 
 });
-
+var users = []
 io.on('connection', function(socket){
-  console.log('a user connected');
 
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
