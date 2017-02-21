@@ -5,13 +5,15 @@ var io = require('socket.io')(http);
 app.use(express.static('.'))
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/test', function(req, res){
-    res.sendFile(__dirname + '/test.html');
+    res.sendFile(__dirname + '/login1.html');
 
 });
+
+app.get('/chat', function(req, res){
+  res.sendFile(__dirname + '/chat.html');
+});
+
+
 var users = []
 io.on('connection', function(socket){
 
