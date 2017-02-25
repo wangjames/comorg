@@ -2,24 +2,23 @@ var app = require('express')();
 var express = require('express')
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var path = require('path');
+
 app.use(express.static('.'))
 
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/login1.html');
 
+app.get('*', function(req, res) {
+  res.sendFile(path.resolve('./index.html'));
 });
-
-app.get('/chat', function(req, res){
-  res.sendFile(__dirname + '/chat.html');
-});
-
 
 var users = []
 io.on('connection', function(socket){
 
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
+    console.log(msg);
   });
+  
   
   socket.on('disconnect', function(){
     console.log('user disconnected');
