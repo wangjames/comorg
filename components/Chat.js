@@ -2,39 +2,46 @@ var React = require('react')
 var ChatInterface = require('./ChatInterface')
 var ChatInput = require('./ChatInput')
 var Chat = React.createClass({
-    
+  
     componentDidMount : function()
     {
-        var socket = io();
-        socket.on('chat message', function(msg){
-            this.addMessage(msg)});
-        socket.on('add user', function(user){
-            this.addUser(user)});
-        socket.emit('chat message', "hey");
+        this.socket = io();
+        this.currentUser = this.props.routeParams.usern;
+        var self = this;
+        
+        this.socket.on('chat message', function(msg){
+            self.addMessage(msgArray)});
+            
+        this.socket.on('setUsers', function(user){
+            self.setUsers(user)});
+        
+        this.socket.emit('add user', this.currentUser);
         
     },
     
-    addUser : function(user)
+    setUsers : function(currentUsers)
     {
-        var currentusers = this.state.users;
-        currentusers.push(user);
-        this.setState({users: currentusers})
+        
+        this.setState({users: currentUsers});
     },
     
     addMessage : function(msg)
-    {
+    {   
         var currentmessages = this.state.messages;
         currentmessages.push(msg);
         this.setState({messages: currentmessages})
     },
+    
     getInitialState : function()
     {
-       return {messages: [], currentMessage: ""};
+       return {messages: [], currentMessage: "", users: []};
     },
     
-    handleSubmitMessage : function()
+    handleSubmitMessage : function(event)
     {
-      socket.emit('chat message', this.state.currentMessage);
+      event.preventDefault();
+      var msgArray = [this.state.currentMessage, this.currentUser]
+      this.socket.emit('chat message', msgArray);
       this.setState({currentMessage: ""});
     },
     
@@ -43,13 +50,18 @@ var Chat = React.createClass({
             currentMessage: event.target.value
         });
     },
+    
     render : function()
     {
         
         return (
             <div className="container">
-                <ChatInterface />
-                <ChatInput />
+                <ChatInterface messages={this.state.messages}
+                                users={this.state.users}/>
+                <ChatInput changeFunction={this.handleUpdateMessage}
+                            submitFunction={this.handleSubmitMessage}
+                            value={this.state.currentMessage}
+                            />
             </div>
             )
        

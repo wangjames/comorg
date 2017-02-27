@@ -7,8 +7,8 @@ var ChatInput = React.createClass({
         return (
         <div className="row">
             <div className="col-md-10" >
-            <form action="">
-            <input className="chatforminput" id="m" autocomplete="off" /><button>Send</button>
+            <form onSubmit={this.props.submitFunction}>
+            <input onChange={this.props.changeFunction} className="chatforminput" id="m" autocomplete="off" value={this.props.value} /><button type="submit">Send</button>
             </form>
         </div>
         </div>

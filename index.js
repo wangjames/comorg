@@ -12,17 +12,22 @@ app.get('*', function(req, res) {
 });
 
 var users = []
+var userObj = {}
+
 io.on('connection', function(socket){
   
   socket.emit('setUsers', users);
   
   socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-    console.log(msg);
+    var message = msg[0];
+    var usermsg = msg[1];
+    var generatedMsg = usermsg + ": " + message;
+    io.emit('chat message', generatedMsg);
   });
   
   socket.on('add user', function(user){
     users.push(user)
+    
     io.emit('setUsers', users)
   });
   
