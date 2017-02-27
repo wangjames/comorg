@@ -1,0 +1,1 @@
+A chat platform written using NodeJS, React, and Express
