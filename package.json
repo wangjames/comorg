@@ -1,7 +1,7 @@
 {
   "name": "comorg",
   "version": "1.0.0",
-  "description": "A  chat platform written using NodeJS, React, and Express",
+  "description": "A chat platform written using NodeJS, React, and Express",
   "main": "index.js",
   "dependencies": {
     "express": "^4.10.2",
